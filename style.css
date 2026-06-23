@@ -4,21 +4,36 @@
 
 body {
     font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #b8ffb9;
-    color: #386338;
+    background-color: #D0F0C0;
+    color: #0e360e;
 }
 
-header nav {
-    position: fixed;
-    top: 50px;          /* leaves room for greeting */
-    right: 10px;
-    z-index: 999;
-    background: #c4f6ff;
-    padding: 5px;
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  position: sticky;
+  overflow: hidden;
+  background-color: #386338;
 }
 
-header nav a {
+ul li {
+  float: left;
+}
+
+ul li a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+ul li a:hover {
+  background-color: #0e360e;
+}
+
+.navbar {
     margin: 0;
     padding: 0;
-    line-height: 1;
 }
