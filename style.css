@@ -3,9 +3,15 @@
 }
 
 body {
-    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    font-family:'Inter', 'Lexend', 'Work Sans', system-ui, sans-serif;
     background-color: #D0F0C0;
     color: #0e360e;
+}
+
+main {
+    padding: 15px;
 }
 
 ul {
@@ -31,9 +37,4 @@ ul li a {
 
 ul li a:hover {
   background-color: #0e360e;
-}
-
-.navbar {
-    margin: 0;
-    padding: 0;
 }
