@@ -1,0 +1,234 @@
+:root {
+	font-family: Georgia, 'Times New Roman', serif;
+	color: #193c2b;
+	background: #edf7ed;
+	font-synthesis: none;
+	text-rendering: optimizeLegibility;
+	--forest: #174a32;
+	--deep-forest: #103a28;
+	--leaf: #5b8c67;
+	--mint: #d8ecd8;
+	--pale-mint: #f6fbf3;
+	--line: #b9d6bb;
+}
+
+* {
+	box-sizing: border-box;
+}
+
+body {
+	margin: 0;
+	min-width: 320px;
+	min-height: 100vh;
+	background: linear-gradient(135deg, #f4fbf1 0%, #e6f3e7 48%, #d6ebd8 100%);
+}
+
+body::before {
+	position: fixed;
+	inset: 0;
+	z-index: -1;
+	pointer-events: none;
+	content: '';
+	opacity: 0.35;
+	background-image: radial-gradient(#9fc8a4 0.7px, transparent 0.7px);
+	background-size: 18px 18px;
+}
+
+.site-nav {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	min-height: 76px;
+	padding: 1rem clamp(1.25rem, 5vw, 5rem);
+	color: #eff8ec;
+	background: var(--forest);
+	box-shadow: 0 10px 24px rgba(23, 74, 50, 0.15);
+}
+
+.site-logo {
+	display: grid;
+	width: 42px;
+	height: 42px;
+	place-items: center;
+	color: var(--forest);
+	font-family: 'Trebuchet MS', sans-serif;
+	font-size: 0.85rem;
+	font-weight: 700;
+	letter-spacing: 0.08em;
+	text-decoration: none;
+	background: #cfe8c9;
+	border-radius: 50%;
+}
+
+.nav-links {
+	display: flex;
+	gap: clamp(0.8rem, 3vw, 2.25rem);
+}
+
+.nav-links a {
+	position: relative;
+	padding: 0.55rem 0;
+	color: #dcefd9;
+	font-family: 'Trebuchet MS', sans-serif;
+	font-size: 0.75rem;
+	font-weight: 700;
+	letter-spacing: 0.08em;
+	text-decoration: none;
+	text-transform: uppercase;
+	transition: color 160ms ease;
+}
+
+.nav-links a::after {
+	position: absolute;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	height: 2px;
+	content: '';
+	background: #b8dcae;
+	transform: scaleX(0);
+	transition: transform 160ms ease;
+}
+
+.nav-links a:hover,
+.nav-links a.active {
+	color: #ffffff;
+}
+
+.nav-links a:hover::after,
+.nav-links a.active::after {
+	transform: scaleX(1);
+}
+
+.site-main {
+	width: min(100% - 2.5rem, 940px);
+	margin: 0 auto;
+	padding: clamp(4rem, 12vw, 9rem) 0;
+}
+
+.page {
+	padding: clamp(2rem, 5vw, 4.5rem);
+	background: rgba(246, 251, 243, 0.78);
+	border: 1px solid rgba(185, 214, 187, 0.8);
+	border-radius: 4px;
+	box-shadow: 0 24px 60px rgba(42, 92, 55, 0.1);
+	animation: rise-in 500ms ease both;
+}
+
+.page-home {
+	min-height: min(66vh, 560px);
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	border-left: 8px solid var(--leaf);
+}
+
+.eyebrow {
+	margin: 0 0 1.5rem;
+	color: var(--leaf);
+	font-family: 'Trebuchet MS', sans-serif;
+	font-size: 0.75rem;
+	font-weight: 700;
+	letter-spacing: 0.14em;
+	text-transform: uppercase;
+}
+
+h1 {
+	max-width: 720px;
+	margin: 0;
+	color: var(--deep-forest);
+	font-size: clamp(2.7rem, 8vw, 5.7rem);
+	font-weight: 400;
+	line-height: 0.98;
+	letter-spacing: -0.03em;
+}
+
+.page:not(.page-home) h1 {
+	font-size: clamp(2.5rem, 6vw, 4.5rem);
+}
+
+.accent-dot {
+	color: var(--leaf);
+}
+
+.lead {
+	max-width: 600px;
+	margin: 1.75rem 0 0;
+	color: #4c6e54;
+	font-size: clamp(1.05rem, 2vw, 1.25rem);
+	line-height: 1.7;
+}
+
+.home-note {
+	width: fit-content;
+	margin-top: 3rem;
+	padding: 0.9rem 1.15rem;
+	color: var(--forest);
+	font-family: 'Trebuchet MS', sans-serif;
+	font-size: 0.85rem;
+	background: var(--mint);
+	border-radius: 2px 16px 2px 16px;
+}
+
+.home-note strong {
+	color: var(--deep-forest);
+}
+
+.research-list {
+	max-width: 700px;
+	margin: 2.25rem 0 0;
+	padding: 0;
+	list-style: none;
+}
+
+.research-list li {
+	padding: 1.15rem 0;
+	color: #4c6e54;
+	line-height: 1.6;
+	border-top: 1px solid var(--line);
+}
+
+.research-list li:last-child {
+	border-bottom: 1px solid var(--line);
+}
+
+.research-list strong {
+	color: var(--deep-forest);
+}
+
+@keyframes rise-in {
+	from {
+		opacity: 0;
+		transform: translateY(12px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+@media (max-width: 560px) {
+	.site-nav {
+		align-items: flex-start;
+		gap: 1rem;
+	}
+
+	.nav-links {
+		flex-wrap: wrap;
+		justify-content: flex-end;
+		gap: 0.45rem 1rem;
+	}
+
+	.nav-links a {
+		font-size: 0.65rem;
+	}
+
+	.site-main {
+		width: min(100% - 1.5rem, 940px);
+		padding: 2.5rem 0;
+	}
+
+	.page {
+		padding: 2rem 1.5rem;
+	}
+}

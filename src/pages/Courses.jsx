@@ -1,8 +1,8 @@
 export default function Courses() {
   return (
-    <div>
+    <div className="page">
       <h1>Courses & Teaching</h1>
-      <p>Classes I've taken or served as a Teaching Assistant for.</p>
+      <p className="lead">Classes I've taken or served as a Teaching Assistant for.</p>
     </div>
   );
 }

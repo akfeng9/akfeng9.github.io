@@ -9,7 +9,7 @@ export default function App() {
   return (
     <HashRouter>
       <Navbar />
-      <main style={{ padding: '2rem' }}>
+      <main className="site-main">
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/research" element={<Research />} />
