@@ -159,6 +159,103 @@ h1 {
 	line-height: 1.7;
 }
 
+.course-groups {
+	display: grid;
+	gap: 3rem;
+	margin-top: 4rem;
+}
+
+.course-layout {
+	display: grid;
+	grid-template-columns: 180px minmax(0, 1fr);
+	gap: clamp(2rem, 6vw, 4.5rem);
+	align-items: start;
+	margin-top: 4rem;
+}
+
+.course-layout .course-groups {
+	margin-top: 0;
+}
+
+.course-navigation {
+	position: sticky;
+	top: 1.5rem;
+}
+
+.course-navigation .eyebrow {
+	margin-bottom: 1rem;
+}
+
+.course-navigation-links {
+	display: grid;
+	gap: 0.7rem;
+}
+
+.course-navigation button {
+	padding: 0 0 0 0.85rem;
+	color: #6a866e;
+	font-family: 'Trebuchet MS', sans-serif;
+	font-size: 0.72rem;
+	font-weight: 700;
+	line-height: 1.35;
+	text-align: left;
+	background: transparent;
+	border: 0;
+	border-left: 2px solid transparent;
+	cursor: pointer;
+	transition: color 160ms ease, border-color 160ms ease;
+}
+
+.course-navigation button:hover,
+.course-navigation button:focus-visible,
+.course-navigation button.active {
+	color: var(--forest);
+	border-left-color: var(--leaf);
+}
+
+.course-group {
+	scroll-margin-top: 2rem;
+}
+
+.course-group {
+	padding-top: 1.5rem;
+	border-top: 1px solid var(--line);
+}
+
+.course-group h2 {
+	margin: 0;
+	color: var(--deep-forest);
+	font-size: clamp(1.4rem, 3vw, 2.1rem);
+	font-weight: 400;
+	line-height: 1.15;
+}
+
+.course-placeholders {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	gap: 1rem;
+	margin-top: 1.5rem;
+}
+
+.course-placeholders article {
+	padding: 1rem;
+	background: var(--mint);
+	border-radius: 2px;
+}
+
+.course-placeholders h3 {
+	margin: 0;
+	color: var(--forest);
+	font-size: 1rem;
+	font-weight: 400;
+}
+
+.course-placeholders p {
+	margin: 0.5rem 0 0;
+	color: #4c6e54;
+	font-size: 0.9rem;
+}
+
 .home-note {
 	width: fit-content;
 	margin-top: 3rem;
@@ -376,5 +473,23 @@ h1 {
 
 	.page {
 		padding: 2rem 1.5rem;
+	}
+
+	.course-placeholders {
+		grid-template-columns: 1fr;
+	}
+
+	.course-layout {
+		grid-template-columns: 1fr;
+		gap: 1.5rem;
+		margin-top: 3rem;
+	}
+
+	.course-navigation {
+		position: static;
+	}
+
+	.course-navigation-links {
+		grid-template-columns: repeat(2, 1fr);
 	}
 }
