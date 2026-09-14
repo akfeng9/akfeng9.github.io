@@ -5,36 +5,36 @@ const courseSections = [
     id: 'machine-learning',
     label: 'Machine Learning, Deep Learning, and Data Mining',
     subsections: [
-      { id: 'machine-learning-1', label: 'Course placeholder 1' },
-      { id: 'machine-learning-2', label: 'Course placeholder 2' },
-      { id: 'machine-learning-3', label: 'Course placeholder 3' },
+      { id: 'data-science', label: 'Data Science', slug: 'data-science' },
+      { id: 'machine-learning-topic', label: 'Machine Learning', slug: 'machine-learning' },
+      { id: 'data-mining', label: 'Data Mining', slug: 'data-mining' },
+      { id: 'neural-networks-deep-learning', label: 'Neural Networks and Deep Learning', slug: 'neural-networks-deep-learning' },
     ],
   },
   {
     id: 'analysis-differential-equations',
     label: 'Analysis, Differential Equations, and Numerical Methods',
     subsections: [
-      { id: 'analysis-differential-equations-1', label: 'Course placeholder 1' },
-      { id: 'analysis-differential-equations-2', label: 'Course placeholder 2' },
-      { id: 'analysis-differential-equations-3', label: 'Course placeholder 3' },
+      { id: 'analysis', label: 'Analysis', slug: 'analysis' },
+      { id: 'differential-equations', label: 'Differential Equations', slug: 'differential-equations' },
+      { id: 'numerical-methods', label: 'Numerical Methods', slug: 'numerical-methods' },
     ],
   },
   {
     id: 'probability-statistics',
     label: 'Probability, Statistics, and Experimental Design',
     subsections: [
-      { id: 'probability-statistics-1', label: 'Course placeholder 1' },
-      { id: 'probability-statistics-2', label: 'Course placeholder 2' },
-      { id: 'probability-statistics-3', label: 'Course placeholder 3' },
+      { id: 'mathematical-statistics', label: 'Mathematical Statistics', slug: 'mathematical-statistics' },
+      { id: 'experimental-design', label: 'Experimental Design', slug: 'experimental-design' },
     ],
   },
   {
     id: 'algebraic-discrete-structures',
     label: 'Algebraic & Discrete Structures',
     subsections: [
-      { id: 'algebraic-discrete-structures-1', label: 'Course placeholder 1' },
-      { id: 'algebraic-discrete-structures-2', label: 'Course placeholder 2' },
-      { id: 'algebraic-discrete-structures-3', label: 'Course placeholder 3' },
+      { id: 'linear-algebra', label: 'Linear Algebra', slug: 'linear-algebra' },
+      { id: 'graph-theory', label: 'Graph Theory', slug: 'graph-theory' },
+      { id: 'mathematical-cryptology', label: 'Mathematical Cryptology', slug: 'mathematical-cryptology' },
     ],
   },
 ];
@@ -110,7 +110,15 @@ export default function Courses() {
                 {section.subsections.map((subsection) => (
                   <div className="course-subsection" id={subsection.id} key={subsection.id}>
                     <h3>{subsection.label}</h3>
-                    <p>Details coming soon.</p>
+                    <p className="course-takeaways-label">Main takeaways</p>
+                    <ul className="course-takeaways">
+                      <li>Key ideas and techniques coming soon.</li>
+                      <li>Important examples and applications coming soon.</li>
+                    </ul>
+                    <div className="course-resource-links">
+                      <a href={`/course-materials/notes/${subsection.slug}.md`}>Notes</a>
+                      <a href={`/course-materials/practice/${subsection.slug}.md`}>Practice problems</a>
+                    </div>
                   </div>
                 ))}
               </div>

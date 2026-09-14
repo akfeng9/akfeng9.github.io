@@ -261,6 +261,46 @@ h1 {
 	font-size: 0.9rem;
 }
 
+.course-takeaways-label {
+	margin-top: 1rem !important;
+	font-family: 'Trebuchet MS', sans-serif;
+	font-size: 0.72rem !important;
+	font-weight: 700;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+}
+
+.course-takeaways {
+	margin: 0.5rem 0 0;
+	padding-left: 1.2rem;
+	color: #4c6e54;
+	font-size: 0.9rem;
+	line-height: 1.6;
+}
+
+.course-resource-links {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 1.25rem;
+	margin-top: 1rem;
+}
+
+.course-resource-links a {
+	color: var(--forest);
+	font-family: 'Trebuchet MS', sans-serif;
+	font-size: 0.72rem;
+	font-weight: 700;
+	letter-spacing: 0.05em;
+	text-decoration: underline;
+	text-underline-offset: 0.25em;
+	text-transform: uppercase;
+}
+
+.course-resource-links a:hover,
+.course-resource-links a:focus-visible {
+	color: var(--deep-forest);
+}
+
 .home-note {
 	width: fit-content;
 	margin-top: 3rem;
