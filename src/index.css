@@ -101,17 +101,13 @@ body::before {
 }
 
 .site-main {
-	width: min(100% - 2.5rem, 940px);
+	width: 100%;
 	margin: 0 auto;
-	padding: clamp(4rem, 12vw, 9rem) 0;
+	padding: 0;
 }
 
 .page {
-	padding: clamp(2rem, 5vw, 4.5rem);
-	background: rgba(246, 251, 243, 0.78);
-	border: 1px solid rgba(185, 214, 187, 0.8);
-	border-radius: 4px;
-	box-shadow: 0 24px 60px rgba(42, 92, 55, 0.1);
+	padding: clamp(2rem, 5vw, 4.5rem) 1.5in;
 	animation: rise-in 500ms ease both;
 }
 
@@ -120,7 +116,6 @@ body::before {
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
-	border-left: 8px solid var(--leaf);
 }
 
 .eyebrow {
@@ -191,6 +186,17 @@ h1 {
 	gap: 0.7rem;
 }
 
+.course-navigation-group {
+	display: grid;
+	gap: 0.45rem;
+}
+
+.course-navigation-subsections {
+	display: grid;
+	gap: 0.35rem;
+	padding-left: 0.65rem;
+}
+
 .course-navigation button {
 	padding: 0 0 0 0.85rem;
 	color: #6a866e;
@@ -230,27 +236,26 @@ h1 {
 	line-height: 1.15;
 }
 
-.course-placeholders {
+.course-subsections {
 	display: grid;
-	grid-template-columns: repeat(3, 1fr);
-	gap: 1rem;
-	margin-top: 1.5rem;
+	gap: 1.5rem;
+	margin-top: 2rem;
 }
 
-.course-placeholders article {
-	padding: 1rem;
-	background: var(--mint);
-	border-radius: 2px;
+.course-subsection {
+	padding-left: 1rem;
+	border-left: 2px solid var(--mint);
+	scroll-margin-top: 2rem;
 }
 
-.course-placeholders h3 {
+.course-subsection h3 {
 	margin: 0;
 	color: var(--forest);
-	font-size: 1rem;
+	font-size: 1.15rem;
 	font-weight: 400;
 }
 
-.course-placeholders p {
+.course-subsection p {
 	margin: 0.5rem 0 0;
 	color: #4c6e54;
 	font-size: 0.9rem;
@@ -467,16 +472,11 @@ h1 {
 	}
 
 	.site-main {
-		width: min(100% - 1.5rem, 940px);
-		padding: 2.5rem 0;
+		width: 100%;
 	}
 
 	.page {
 		padding: 2rem 1.5rem;
-	}
-
-	.course-placeholders {
-		grid-template-columns: 1fr;
 	}
 
 	.course-layout {
