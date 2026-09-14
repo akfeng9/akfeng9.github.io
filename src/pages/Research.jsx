@@ -1,24 +1,28 @@
 export default function Research() {
+  const scrollToSection = (sectionId) => {
+    document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+
   return (
     <div className="page research-page">
       <h1>Research</h1>
       <p className="lead">Questions, collaborations, and ideas worth following.</p>
       <nav className="research-cards" aria-label="Research projects">
-        <a className="research-card" href="#constructed-circulation-analogs">
+        <button className="research-card" type="button" onClick={() => scrollToSection('constructed-circulation-analogs')}>
           <span className="research-card-number">01</span>
           <h2>Constructed Circulation Analogs Method</h2>
           <span className="research-card-link">Explore project <span aria-hidden="true">→</span></span>
-        </a>
-        <a className="research-card" href="#planetary-boundary-layer">
+        </button>
+        <button className="research-card" type="button" onClick={() => scrollToSection('planetary-boundary-layer')}>
           <span className="research-card-number">02</span>
           <h2>Planetary Boundary Layer Height</h2>
           <span className="research-card-link">Explore project <span aria-hidden="true">→</span></span>
-        </a>
-        <a className="research-card" href="#diurnal-cycle">
+        </button>
+        <button className="research-card" type="button" onClick={() => scrollToSection('diurnal-cycle')}>
           <span className="research-card-number">03</span>
           <h2>Diurnal Cycle</h2>
           <span className="research-card-link">Explore project <span aria-hidden="true">→</span></span>
-        </a>
+        </button>
       </nav>
 
       <div className="research-details">
