@@ -120,7 +120,7 @@ body::before {
 
 .home-intro {
 	display: grid;
-	grid-template-columns: minmax(0, 1fr) minmax(220px, 300px);
+	grid-template-columns: minmax(0, 1fr) minmax(220px, 375px);
 	gap: clamp(2rem, 8vw, 7rem);
 	align-items: center;
 }
@@ -154,7 +154,7 @@ body::before {
 	object-position: center 40%;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 1000px) {
 	.page {
 		padding-right: clamp(1.5rem, 8vw, 1.5in);
 		padding-left: clamp(1.5rem, 8vw, 1.5in);
