@@ -209,26 +209,133 @@ h1 {
 	text-decoration: underline;
 }
 
-.research-list {
-	max-width: 700px;
-	margin: 2.25rem 0 0;
-	padding: 0;
-	list-style: none;
+.research-cards {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	gap: 1rem;
+	margin-top: 3rem;
 }
 
-.research-list li {
-	padding: 1.15rem 0;
-	color: #4c6e54;
-	line-height: 1.6;
+.research-card {
+	display: flex;
+	min-height: 220px;
+	flex-direction: column;
+	padding: 1.35rem;
+	color: var(--deep-forest);
+	text-decoration: none;
+	background: var(--mint);
+	border: 1px solid transparent;
+	border-radius: 3px;
+	transition: transform 180ms ease, background 180ms ease, border-color 180ms ease;
+}
+
+.research-card:hover,
+.research-card:focus-visible {
+	background: #c9e4ca;
+	border-color: var(--leaf);
+	transform: translateY(-5px);
+}
+
+.research-card-number {
+	color: var(--leaf);
+	font-family: 'Trebuchet MS', sans-serif;
+	font-size: 0.75rem;
+	font-weight: 700;
+	letter-spacing: 0.1em;
+}
+
+.research-card h2 {
+	margin: 1.5rem 0;
+	font-size: clamp(1.15rem, 2vw, 1.45rem);
+	font-weight: 400;
+	line-height: 1.15;
+}
+
+.research-card-link {
+	margin-top: auto;
+	color: var(--forest);
+	font-family: 'Trebuchet MS', sans-serif;
+	font-size: 0.75rem;
+	font-weight: 700;
+	letter-spacing: 0.05em;
+	text-transform: uppercase;
+}
+
+.research-card-link span {
+	font-size: 1rem;
+}
+
+.research-details {
+	margin-top: clamp(4rem, 9vw, 7rem);
+}
+
+.research-details section {
+	padding: 2rem 0;
 	border-top: 1px solid var(--line);
+	scroll-margin-top: 2rem;
 }
 
-.research-list li:last-child {
+.research-details section:last-child {
 	border-bottom: 1px solid var(--line);
 }
 
-.research-list strong {
+.research-details .eyebrow {
+	margin-bottom: 0.9rem;
+}
+
+.research-details h2 {
+	margin: 0;
 	color: var(--deep-forest);
+	font-size: clamp(1.5rem, 3vw, 2.25rem);
+	font-weight: 400;
+}
+
+.research-details section > p:not(.eyebrow) {
+	max-width: 620px;
+	margin: 1rem 0 0;
+	color: #4c6e54;
+	line-height: 1.7;
+}
+
+.detail-link {
+	display: inline-block;
+	margin-top: 1.5rem;
+	color: var(--forest);
+	font-family: 'Trebuchet MS', sans-serif;
+	font-size: 0.78rem;
+	font-weight: 700;
+	letter-spacing: 0.05em;
+	text-decoration: underline;
+	text-underline-offset: 0.25em;
+	text-transform: uppercase;
+}
+
+.detail-link:hover,
+.detail-link:focus-visible {
+	color: var(--deep-forest);
+}
+
+.detail-page h1 {
+	max-width: 780px;
+	font-size: clamp(2.3rem, 6vw, 4.5rem);
+}
+
+.back-link {
+	display: inline-block;
+	margin-bottom: 2.5rem;
+	color: var(--forest);
+	font-family: 'Trebuchet MS', sans-serif;
+	font-size: 0.78rem;
+	font-weight: 700;
+	letter-spacing: 0.05em;
+	text-decoration: none;
+	text-transform: uppercase;
+}
+
+.back-link:hover,
+.back-link:focus-visible {
+	text-decoration: underline;
+	text-underline-offset: 0.25em;
 }
 
 @keyframes rise-in {
