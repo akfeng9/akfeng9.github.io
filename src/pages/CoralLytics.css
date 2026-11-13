@@ -1361,6 +1361,77 @@
 	cursor: default;
 }
 
+.coral-time-navigator {
+	margin-top: 0.9rem;
+	padding: 0.7rem 0.75rem 0.3rem;
+	background: #f0f7f8;
+	border: 1px solid #d4e5e9;
+}
+
+.coral-time-navigator-heading {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	gap: 0.35rem 1rem;
+	color: #456f80;
+	font-size: 0.61rem;
+}
+
+.coral-time-navigator-heading span {
+	color: #7895a1;
+}
+
+.coral-time-navigator-chart {
+	display: block;
+	width: 100%;
+	height: auto;
+	margin-top: 0.2rem;
+	overflow: visible;
+	touch-action: none;
+	user-select: none;
+}
+
+.coral-time-navigator-track {
+	fill: #e2edf0;
+}
+
+.coral-time-navigator-bar {
+	fill: #8baeb9;
+	opacity: 0.65;
+	pointer-events: none;
+}
+
+.coral-time-navigator-window {
+	fill: rgba(78, 121, 167, 0.14);
+	stroke: #4e79a7;
+	stroke-width: 1;
+	cursor: grab;
+}
+
+.coral-time-navigator-window:active {
+	cursor: grabbing;
+}
+
+.coral-time-navigator-handle {
+	fill: #4e79a7;
+	stroke: #f7fbfc;
+	stroke-width: 1;
+	cursor: ew-resize;
+	touch-action: none;
+}
+
+.coral-time-navigator-handle:focus-visible {
+	stroke: #143b52;
+	stroke-width: 2;
+	outline: none;
+}
+
+.coral-time-navigator-tick {
+	stroke: #8ba6af;
+	stroke-width: 1;
+	pointer-events: none;
+}
+
 .coral-season-legend {
 	display: flex;
 	flex-wrap: wrap;

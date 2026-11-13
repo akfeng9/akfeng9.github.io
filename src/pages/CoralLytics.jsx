@@ -347,6 +347,118 @@ function SurveyTimeSeriesChart({ surveys, metric, label, unit, color, maximum, d
   );
 }
 
+function TimeRangeNavigator({ surveys, dateStart, dateEnd, selectedStart, selectedEnd, onChange }) {
+  const svgRef = useRef(null);
+  const drag = useRef(null);
+  const left = 28;
+  const right = 932;
+  const top = 10;
+  const bottom = 54;
+  const fullStart = Date.parse(`${dateStart}T00:00:00Z`);
+  const fullEnd = Date.parse(`${dateEnd}T23:59:59Z`);
+  const timeRange = Math.max(1, fullEnd - fullStart);
+  const startTime = Date.parse(`${selectedStart}T00:00:00Z`);
+  const endTime = Date.parse(`${selectedEnd}T23:59:59Z`);
+  const xForTime = (time) => left + ((time - fullStart) / timeRange) * (right - left);
+  const timeForX = (x) => fullStart + ((Math.max(left, Math.min(right, x)) - left) / (right - left)) * timeRange;
+  const dateForTime = (time) => new Date(Math.max(fullStart, Math.min(fullEnd, time))).toISOString().slice(0, 10);
+  const rangeStartX = xForTime(startTime);
+  const rangeEndX = xForTime(endTime);
+  const bins = useMemo(() => {
+    const counts = Array(80).fill(0);
+    for (const survey of surveys) {
+      const index = Math.min(79, Math.floor(((survey.dateTime - fullStart) / timeRange) * counts.length));
+      if (index >= 0) counts[index] += 1;
+    }
+    const maxCount = Math.max(...counts, 1);
+    return counts.map((count, index) => ({
+      x: left + (index / counts.length) * (right - left),
+      height: (count / maxCount) * (bottom - top),
+      width: (right - left) / counts.length - 1,
+    }));
+  }, [surveys, fullStart, timeRange]);
+  const ticks = Array.from({ length: 5 }, (_, index) => {
+    const time = fullStart + (timeRange * index) / 4;
+    return { x: xForTime(time), label: String(new Date(time).getUTCFullYear()) };
+  });
+
+  const setRangeFromPointer = (event) => {
+    const svg = svgRef.current;
+    if (!svg || !drag.current || drag.current.pointerId !== event.pointerId) return;
+    const point = pointFromPointer(event.clientX, event.clientY, svg);
+    if (!point) return;
+    const currentTime = timeForX(point.x);
+    const { mode, start, end, pointerTime } = drag.current;
+    const minimumRange = 1;
+    let nextStart = start;
+    let nextEnd = end;
+    if (mode === 'start') {
+      nextStart = Math.min(currentTime, end - minimumRange);
+    } else if (mode === 'end') {
+      nextEnd = Math.max(currentTime, start + minimumRange);
+    } else {
+      const delta = currentTime - pointerTime;
+      nextStart = Math.max(fullStart, Math.min(fullEnd - (end - start), start + delta));
+      nextEnd = nextStart + (end - start);
+    }
+    onChange(dateForTime(nextStart), dateForTime(nextEnd));
+  };
+
+  const handlePointerDown = (event) => {
+    if (event.button !== 0) return;
+    const svg = svgRef.current;
+    if (!svg) return;
+    const point = pointFromPointer(event.clientX, event.clientY, svg);
+    if (!point || point.x < left || point.x > right || point.y < top - 4 || point.y > bottom + 4) return;
+    const mode = event.target.dataset.mode || 'move';
+    const pointerTime = timeForX(point.x);
+    drag.current = {
+      pointerId: event.pointerId,
+      mode,
+      start: startTime,
+      end: endTime,
+      pointerTime: mode === 'move' && !event.target.dataset.mode ? (startTime + endTime) / 2 : pointerTime,
+    };
+    svg.setPointerCapture(event.pointerId);
+    if (!event.target.dataset.mode) setRangeFromPointer(event);
+  };
+
+  const handlePointerUp = (event) => {
+    if (!drag.current || drag.current.pointerId !== event.pointerId) return;
+    setRangeFromPointer(event);
+    drag.current = null;
+  };
+
+  const handleHandleKeyDown = (event, mode) => {
+    if (!['ArrowLeft', 'ArrowRight'].includes(event.key)) return;
+    event.preventDefault();
+    const step = 30 * 24 * 60 * 60 * 1000 * (event.shiftKey ? 12 : 1);
+    const delta = event.key === 'ArrowLeft' ? -step : step;
+    const minimumRange = 1;
+    const nextStart = mode === 'start'
+      ? Math.max(fullStart, Math.min(endTime - minimumRange, startTime + delta))
+      : startTime;
+    const nextEnd = mode === 'end'
+      ? Math.min(fullEnd, Math.max(startTime + minimumRange, endTime + delta))
+      : endTime;
+    onChange(dateForTime(nextStart), dateForTime(nextEnd));
+  };
+
+  return (
+    <div className="coral-time-navigator">
+      <div className="coral-time-navigator-heading"><strong>Time range</strong><span>Drag the highlighted window to move it; drag either edge to resize.</span></div>
+      <svg ref={svgRef} className="coral-time-navigator-chart" viewBox="0 0 960 86" role="group" aria-label="Full timeline navigator" onPointerDown={handlePointerDown} onPointerMove={setRangeFromPointer} onPointerUp={handlePointerUp} onPointerCancel={() => { drag.current = null; }}>
+        <rect x={left} y={top} width={right - left} height={bottom - top} className="coral-time-navigator-track" />
+        {bins.map((bin, index) => <rect key={index} x={bin.x} y={bottom - bin.height} width={bin.width} height={bin.height} className="coral-time-navigator-bar" />)}
+        <rect x={rangeStartX} y={top} width={Math.max(1, rangeEndX - rangeStartX)} height={bottom - top} className="coral-time-navigator-window" data-mode="move" />
+        <rect x={rangeStartX - 7} y={top - 4} width="14" height={bottom - top + 8} rx="2" className="coral-time-navigator-handle" data-mode="start" role="slider" tabIndex="0" aria-label="Start of selected time range" aria-valuemin={fullStart} aria-valuemax={endTime - 1} aria-valuenow={startTime} aria-valuetext={selectedStart} onKeyDown={(event) => handleHandleKeyDown(event, 'start')} />
+        <rect x={rangeEndX - 7} y={top - 4} width="14" height={bottom - top + 8} rx="2" className="coral-time-navigator-handle" data-mode="end" role="slider" tabIndex="0" aria-label="End of selected time range" aria-valuemin={startTime + 1} aria-valuemax={fullEnd} aria-valuenow={endTime} aria-valuetext={selectedEnd} onKeyDown={(event) => handleHandleKeyDown(event, 'end')} />
+        {ticks.map(({ x, label }) => <g key={`${x}-${label}`}><line x1={x} x2={x} y1={bottom + 4} y2={bottom + 7} className="coral-time-navigator-tick" /><text x={x} y="81" textAnchor="middle" className="coral-chart-label">{label}</text></g>)}
+      </svg>
+    </div>
+  );
+}
+
 export default function CoralLytics() {
   const [surveys, setSurveys] = useState([]);
   const [loadError, setLoadError] = useState('');
@@ -781,6 +893,9 @@ export default function CoralLytics() {
                 <SurveyTimeSeriesChart surveys={chartWindowSurveys} metric="dhw" label="Degree heating weeks" unit="SSTA_DHW (°C-weeks)" color="#F28E2B" maximum={dhwMaximum} dateStart={chartStartDate} dateEnd={chartEndDate} selectedSeason={selectedSeason} showTrend={showTrend} onSelectSurvey={selectChartSurvey} onZoomRange={zoomChartRange} />
               </div>
             ) : <p className="coral-empty-note">Choose broader filters or a different date range to view survey observations.</p>}
+            {chartDateBounds.start && (
+              <TimeRangeNavigator surveys={baseSurveys} dateStart={chartDateBounds.start} dateEnd={chartDateBounds.end} selectedStart={chartStartDate} selectedEnd={chartEndDate} onChange={zoomChartRange} />
+            )}
             {lassoIds.length > 0 && (
               <div className="coral-lasso-summary">
                 <strong>{lassoIds.length.toLocaleString()} surveys selected</strong>
