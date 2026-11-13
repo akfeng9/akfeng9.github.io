@@ -9,7 +9,6 @@ export default function Navbar() {
       <NavLink to="/research">Research</NavLink>
       <NavLink to="/projects">Projects</NavLink>
       <NavLink to="/coral-lytics">Coral-lytics</NavLink>
-      <NavLink to="/courses">Courses</NavLink>
       </div>
     </nav>
   );
