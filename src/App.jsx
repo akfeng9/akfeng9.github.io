@@ -1,4 +1,4 @@
-import { HashRouter, Routes, Route } from 'react-router';
+import { HashRouter, Routes, Route, useLocation } from 'react-router';
 import Navbar from './components/Navbar';
 import Home from './pages/Home';
 import Research from './pages/Research';
@@ -7,22 +7,34 @@ import Courses from './pages/Courses';
 import ConstructedCirculationAnalogs from './pages/ConstructedCirculationAnalogs';
 import PlanetaryBoundaryLayer from './pages/PlanetaryBoundaryLayer';
 import DiurnalCycle from './pages/DiurnalCycle';
+import CoralLytics from './pages/CoralLytics';
 
-export default function App() {
+function AppRoutes() {
+  const { pathname } = useLocation();
+
   return (
-    <HashRouter>
-      <Navbar />
+    <>
+      {pathname !== '/coral-lytics' && <Navbar />}
       <main className="site-main">
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/research" element={<Research />} />
           <Route path="/projects" element={<Projects />} />
+          <Route path="/coral-lytics" element={<CoralLytics />} />
           <Route path="/courses" element={<Courses />} />
           <Route path="/research/constructed-circulation-analogs" element={<ConstructedCirculationAnalogs />} />
           <Route path="/research/planetary-boundary-layer" element={<PlanetaryBoundaryLayer />} />
           <Route path="/research/diurnal-cycle" element={<DiurnalCycle />} />
         </Routes>
       </main>
+    </>
+  );
+}
+
+export default function App() {
+  return (
+    <HashRouter>
+      <AppRoutes />
     </HashRouter>
   );
 }

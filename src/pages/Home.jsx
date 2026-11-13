@@ -1,7 +1,6 @@
 export default function Home() {
   return (
     <div className="page page-home">
-      <p className="eyebrow">Welcome to my corner of the web</p>
       <div className="home-intro">
         <div className="home-intro-copy">
           <h1>Hi, I'm Annie Feng<span className="accent-dot">.</span></h1>

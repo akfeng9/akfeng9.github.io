@@ -1,0 +1,2 @@
+cartopy>=0.26
+matplotlib>=3.8
