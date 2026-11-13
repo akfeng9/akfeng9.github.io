@@ -74,40 +74,6 @@
 	font-size: 0.6rem;
 }
 
-.coral-kpis {
-	display: grid;
-	grid-template-columns: repeat(4, minmax(0, 1fr));
-	margin: 1.3rem 0;
-	background: rgba(248, 251, 244, 0.8);
-	border: 1px solid #c5dbd1;
-}
-
-.coral-kpi {
-	display: grid;
-	gap: 0.35rem;
-	padding: 1.15rem 1.35rem;
-	border-right: 1px solid #d5e5dc;
-}
-
-.coral-kpi:last-child {
-	border-right: 0;
-}
-
-.coral-kpi > span,
-.coral-kpi > small {
-	color: #648078;
-	font-size: 0.67rem;
-}
-
-.coral-kpi > strong {
-	color: #153b3a;
-	font-family: Georgia, 'Times New Roman', serif;
-	font-size: clamp(1.5rem, 2.8vw, 2.15rem);
-	font-weight: 400;
-	line-height: 1.05;
-}
-
-.coral-kpi > strong i,
 .coral-primary-metric strong i {
 	margin-left: 0.15rem;
 	color: #e7836d;
@@ -983,15 +949,11 @@
 	.coral-filterbar label:nth-of-type(4) { grid-column: 1; }
 	.coral-dashboard { grid-template-columns: minmax(0, 1.4fr) minmax(270px, 0.8fr); }
 	.coral-panel { padding: 1.1rem; }
-	.coral-kpi { padding: 1rem; }
 }
 
 @media (max-width: 740px) {
 	.coral-header { align-items: start; }
 	.coral-source-mark { display: none; }
-	.coral-kpis { grid-template-columns: repeat(2, 1fr); }
-	.coral-kpi:nth-child(2) { border-right: 0; }
-	.coral-kpi:nth-child(-n + 2) { border-bottom: 1px solid #d5e5dc; }
 	.coral-dashboard { grid-template-columns: 1fr; }
 	.coral-detail-panel { min-height: auto; }
 	.coral-trend-heading { align-items: start; flex-direction: column; }
@@ -1030,8 +992,6 @@
 }
 
 .coral-header,
-.coral-kpi,
-.coral-kpi:nth-child(-n + 2),
 .coral-advanced-filter,
 .coral-map-panel,
 .coral-detail-grid,
@@ -1043,8 +1003,6 @@
 
 .coral-eyebrow,
 .coral-section-kicker,
-.coral-kpi > span,
-.coral-kpi > small,
 .coral-filterbar label,
 .coral-panel-caption,
 .coral-map-count,
@@ -1063,7 +1021,6 @@
 
 .coral-title-period,
 .coral-filter-icon,
-.coral-kpi > strong i,
 .coral-primary-metric strong i,
 .coral-timeline-heading strong {
 	color: #278da2;
@@ -1080,7 +1037,6 @@
 }
 
 .coral-header h1,
-.coral-kpi > strong,
 .coral-panel-heading h2,
 .coral-map-count strong,
 .coral-site-title strong,
@@ -1098,7 +1054,6 @@
 	color: #315d70;
 }
 
-.coral-kpis,
 .coral-panel,
 .coral-detail-panel,
 .coral-filterbar {
@@ -1328,6 +1283,19 @@
 
 .coral-series-chart .coral-trend {
 	min-height: 0;
+}
+
+.coral-series-chart .coral-scatter-chart {
+	cursor: crosshair;
+	touch-action: none;
+	user-select: none;
+}
+
+.coral-chart-brush {
+	fill: rgba(78, 121, 167, 0.18);
+	stroke: #4e79a7;
+	stroke-width: 1;
+	pointer-events: none;
 }
 
 .coral-signal-controls {

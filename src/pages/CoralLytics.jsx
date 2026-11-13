@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import csvUrl from '../../global_bleaching_environmental.csv?url';
-import coralMapUrl from './coral-map.png';
+import coralMapUrl from './coral-map.svg';
 import './CoralLytics.css';
 
 const MAP_WIDTH = 960;
@@ -70,7 +70,8 @@ function parseSurveys(text) {
     const longitude = parseNumber(field('Longitude_Degrees'));
     const year = parseNumber(field('Date_Year'));
     const month = parseNumber(field('Date_Month'));
-    if (latitude === null || longitude === null || year === null || month === null || month < 1 || month > 12) continue;
+    const percent = parseNumber(field('Percent_Bleaching'));
+    if (latitude === null || longitude === null || year === null || month === null || month < 1 || month > 12 || percent === null) continue;
 
     surveys.push({
       id: `${field('Sample_ID')}-${lineIndex}`,
@@ -90,7 +91,7 @@ function parseSurveys(text) {
       dateTime: Date.UTC(year, month - 1, 15),
       period: `${year}-${String(month).padStart(2, '0')}`,
       level: field('Bleaching_Level'),
-      percent: parseNumber(field('Percent_Bleaching')),
+      percent,
       temperature: parseNumber(field('Temperature_Kelvin')),
       meanTemperature: parseNumber(field('Temperature_Mean')),
       minimumTemperature: parseNumber(field('Temperature_Minimum')),
@@ -219,8 +220,10 @@ function surveyCorrelation(surveys) {
   return { value: denominator ? covariance / denominator : null, count: paired.length };
 }
 
-function SurveyTimeSeriesChart({ surveys, metric, label, unit, color, maximum, dateStart, dateEnd, selectedSeason, showTrend, onSelectSurvey }) {
+function SurveyTimeSeriesChart({ surveys, metric, label, unit, color, maximum, dateStart, dateEnd, selectedSeason, showTrend, onSelectSurvey, onZoomRange }) {
   const chartRef = useRef(null);
+  const pointerStart = useRef(null);
+  const [brushRange, setBrushRange] = useState(null);
   const left = 64;
   const right = 944;
   const top = 14;
@@ -272,11 +275,40 @@ function SurveyTimeSeriesChart({ surveys, metric, label, unit, color, maximum, d
       return { x: xForDate(time), label: labelText };
     });
   }, [endTime, startTime, xForDate]);
-  const handlePointerUp = (event) => {
+  const handlePointerDown = (event) => {
+    if (event.button !== 0) return;
+    const svg = chartRef.current;
+    if (!svg) return;
+    const point = pointFromPointer(event.clientX, event.clientY, svg);
+    if (!point || point.x < left || point.x > right || point.y < top || point.y > bottom) return;
+    pointerStart.current = { pointerId: event.pointerId, x: point.x };
+    setBrushRange({ start: point.x, end: point.x });
+    svg.setPointerCapture(event.pointerId);
+  };
+  const handlePointerMove = (event) => {
+    if (!pointerStart.current || pointerStart.current.pointerId !== event.pointerId) return;
     const svg = chartRef.current;
     if (!svg) return;
     const point = pointFromPointer(event.clientX, event.clientY, svg);
     if (!point) return;
+    setBrushRange({ start: pointerStart.current.x, end: Math.max(left, Math.min(right, point.x)) });
+  };
+  const handlePointerUp = (event) => {
+    const start = pointerStart.current;
+    if (!start || start.pointerId !== event.pointerId) return;
+    pointerStart.current = null;
+    const svg = chartRef.current;
+    const point = svg && pointFromPointer(event.clientX, event.clientY, svg);
+    setBrushRange(null);
+    if (!svg || !point) return;
+    const endX = Math.max(left, Math.min(right, point.x));
+    if (Math.abs(endX - start.x) >= 6) {
+      const dateForX = (x) => new Date(startTime + ((x - left) / (right - left)) * timeRange).toISOString().slice(0, 10);
+      const firstDate = dateForX(Math.min(start.x, endX));
+      const lastDate = dateForX(Math.max(start.x, endX));
+      onZoomRange(firstDate, lastDate);
+      return;
+    }
     let nearest = null;
     let distance = 10;
     for (const survey of chartSurveys) {
@@ -292,7 +324,7 @@ function SurveyTimeSeriesChart({ surveys, metric, label, unit, color, maximum, d
   return (
     <section className="coral-series-chart" aria-label={`${label} individual survey time series`}>
       <div className="coral-series-heading"><strong>{label}</strong><span>{unit} · {chartSurveys.length.toLocaleString()} plotted surveys</span></div>
-      <svg ref={chartRef} className="coral-trend coral-scatter-chart" viewBox="0 0 960 155" role="img" aria-label={`${chartSurveys.length} individual survey measurements of ${label} over time`} onPointerUp={handlePointerUp}>
+      <svg ref={chartRef} className="coral-trend coral-scatter-chart" viewBox="0 0 960 155" role="img" aria-label={`${chartSurveys.length} individual survey measurements of ${label} over time. Drag across the plot to zoom to a date range; click a point to inspect it.`} onPointerDown={handlePointerDown} onPointerMove={handlePointerMove} onPointerUp={handlePointerUp} onPointerCancel={() => { pointerStart.current = null; setBrushRange(null); }}>
         <defs><clipPath id={`clip-${metric}`}><rect x={left} y={top} width={right - left} height={bottom - top} /></clipPath></defs>
         {axisTicks.map((tick) => {
           const y = yForValue(tick);
@@ -308,6 +340,7 @@ function SurveyTimeSeriesChart({ surveys, metric, label, unit, color, maximum, d
         </g>
         {ticks.map(({ x, label: tickLabel }) => <g key={`${x}-${tickLabel}`}><line x1={x} x2={x} y1={bottom} y2={bottom + 4} className="coral-chart-grid" /><text x={x} y="141" textAnchor="middle" className="coral-chart-label">{tickLabel}</text></g>)}
         <rect x={left} y={top} width={right - left} height={bottom - top} className="coral-chart-hit-area" aria-hidden="true" />
+        {brushRange && <rect x={Math.min(brushRange.start, brushRange.end)} y={top} width={Math.abs(brushRange.end - brushRange.start)} height={bottom - top} className="coral-chart-brush" aria-hidden="true" />}
       </svg>
       {chartSurveys.length === 0 && <p className="coral-series-empty">No reported values in this time range.</p>}
     </section>
@@ -376,15 +409,6 @@ export default function CoralLytics() {
   }, [surveys]);
   const periodIndex = Math.max(0, periodCounts.findIndex(([period]) => period === selectedPeriod));
   const selectedYear = selectedPeriod ? Number(selectedPeriod.slice(0, 4)) : null;
-  const siteCount = useMemo(() => new Set(baseSurveys.map((survey) => survey.siteId)).size, [baseSurveys]);
-  const averageBleaching = useMemo(() => {
-    const values = baseSurveys.filter((survey) => survey.percent !== null);
-    return values.length ? values.reduce((total, survey) => total + survey.percent, 0) / values.length : null;
-  }, [baseSurveys]);
-  const averageSsta = useMemo(() => {
-    const values = baseSurveys.filter((survey) => survey.ssta !== null);
-    return values.length ? values.reduce((total, survey) => total + survey.ssta, 0) / values.length : null;
-  }, [baseSurveys]);
   const temperatureBounds = useMemo(() => {
     const values = surveys.map((survey) => survey.meanTemperature).filter((value) => value !== null);
     return values.length ? [Math.min(...values) - 273.15, Math.max(...values) - 273.15] : [0, 40];
@@ -443,6 +467,11 @@ export default function CoralLytics() {
   const changeChartEnd = (value) => {
     setRequestedChartEnd(value);
     if (value < chartStartDate) setRequestedChartStart(value);
+  };
+
+  const zoomChartRange = (start, end) => {
+    setRequestedChartStart(start);
+    setRequestedChartEnd(end);
   };
 
   const resetChartZoom = () => {
@@ -547,13 +576,6 @@ export default function CoralLytics() {
         <div className="coral-loading" role="status"><span className="coral-loader" /> Loading global survey data…</div>
       ) : (
         <>
-          <section className="coral-kpis" aria-label="Overview statistics">
-            <div className="coral-kpi"><span>Survey records</span><strong>{baseSurveys.length.toLocaleString()}</strong><small>within current filters</small></div>
-            <div className="coral-kpi"><span>Survey locations</span><strong>{siteCount.toLocaleString()}</strong><small>distinct site identifiers</small></div>
-            <div className="coral-kpi"><span>Mean bleaching</span><strong>{averageBleaching === null ? '—' : <>{averageBleaching.toFixed(1)}<i>%</i></>}</strong><small>reported survey average</small></div>
-            <div className="coral-kpi"><span>Mean heat anomaly</span><strong>{averageSsta === null ? '—' : <>{averageSsta.toFixed(1)}<i>°C</i></>}</strong><small>sea surface temperature</small></div>
-          </section>
-
           <section className="coral-filterbar" aria-label="Survey filters">
             <div className="coral-filter-heading"><span className="coral-filter-icon">⌕</span><strong>Refine surveys</strong></div>
             <label>Ocean
@@ -731,7 +753,7 @@ export default function CoralLytics() {
                 <div className="coral-correlation-stat"><span>PEARSON r · BLEACHING × DHW</span><strong>{correlation.value === null ? '—' : correlation.value.toFixed(2)}</strong><small>{correlation.count.toLocaleString()} paired surveys</small></div>
               </div>
             </div>
-            <p className="coral-series-note">Each mark is one survey’s reported value (not an annual average). Choose a season to emphasize it and fade other seasons; toggle the linear trend line. Set start and end dates to zoom the shared time window. Click a plotted point to select its survey on the map. Correlation is across paired survey-level observations and does not imply causation.</p>
+            <p className="coral-series-note">Each mark is one survey’s reported value (not an annual average). Choose a season to emphasize it and fade other seasons; toggle the linear trend line. Drag across either plot to zoom the shared time window, or set start and end dates. Click a plotted point to select its survey on the map. Correlation is across paired survey-level observations and does not imply causation.</p>
             <div className="coral-signal-controls">
               <label>Highlight season
                 <select value={selectedSeason} onChange={(event) => setSelectedSeason(event.target.value)}>
@@ -755,8 +777,8 @@ export default function CoralLytics() {
             </div>
             {chartWindowSurveys.length ? (
               <div className="coral-series-grid">
-                <SurveyTimeSeriesChart surveys={chartWindowSurveys} metric="percent" label="Reported bleaching" unit="Percent bleached (%)" color="#4E79A7" maximum={100} dateStart={chartStartDate} dateEnd={chartEndDate} selectedSeason={selectedSeason} showTrend={showTrend} onSelectSurvey={selectChartSurvey} />
-                <SurveyTimeSeriesChart surveys={chartWindowSurveys} metric="dhw" label="Degree heating weeks" unit="SSTA_DHW (°C-weeks)" color="#F28E2B" maximum={dhwMaximum} dateStart={chartStartDate} dateEnd={chartEndDate} selectedSeason={selectedSeason} showTrend={showTrend} onSelectSurvey={selectChartSurvey} />
+                <SurveyTimeSeriesChart surveys={chartWindowSurveys} metric="percent" label="Reported bleaching" unit="Percent bleached (%)" color="#4E79A7" maximum={100} dateStart={chartStartDate} dateEnd={chartEndDate} selectedSeason={selectedSeason} showTrend={showTrend} onSelectSurvey={selectChartSurvey} onZoomRange={zoomChartRange} />
+                <SurveyTimeSeriesChart surveys={chartWindowSurveys} metric="dhw" label="Degree heating weeks" unit="SSTA_DHW (°C-weeks)" color="#F28E2B" maximum={dhwMaximum} dateStart={chartStartDate} dateEnd={chartEndDate} selectedSeason={selectedSeason} showTrend={showTrend} onSelectSurvey={selectChartSurvey} onZoomRange={zoomChartRange} />
               </div>
             ) : <p className="coral-empty-note">Choose broader filters or a different date range to view survey observations.</p>}
             {lassoIds.length > 0 && (
