@@ -169,7 +169,7 @@ body::before {
 	}
 
 	.home-headshot-frame {
-		width: min(100%, 420px);
+		width: min(100%, 320px);
 		justify-self: center;
 	}
 }
