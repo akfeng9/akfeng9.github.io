@@ -3,6 +3,7 @@ import Navbar from './components/Navbar';
 import Home from './pages/Home';
 import Research from './pages/Research';
 import Projects from './pages/Projects';
+import Courses from './pages/Courses';
 import ConstructedCirculationAnalogs from './pages/ConstructedCirculationAnalogs';
 import PlanetaryBoundaryLayer from './pages/PlanetaryBoundaryLayer';
 import DiurnalCycle from './pages/DiurnalCycle';
@@ -19,6 +20,7 @@ function AppRoutes() {
           <Route path="/" element={<Home />} />
           <Route path="/research" element={<Research />} />
           <Route path="/projects" element={<Projects />} />
+          <Route path="/courses" element={<Courses />} />
           <Route path="/coral-lytics" element={<CoralLytics />} />
           <Route path="/research/constructed-circulation-analogs" element={<ConstructedCirculationAnalogs />} />
           <Route path="/research/planetary-boundary-layer" element={<PlanetaryBoundaryLayer />} />

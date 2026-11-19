@@ -7,7 +7,12 @@ export default function Home() {
           <p className="lead">I build projects and conduct research at the intersection of thoughtful technology and curious questions.</p>
         </div>
         <div className="home-headshot-frame">
-          <img className="home-headshot" src="/course-materials/headshot.jpg" alt="Annie Feng" />
+          <img
+            className="home-headshot"
+            src="/course-materials/headshot.png"
+            alt="Annie Feng"
+            loading="eager"
+          />
         </div>
       </div>
       <div className="home-note">Currently exploring <strong>new ideas</strong> and making useful things.</div>
