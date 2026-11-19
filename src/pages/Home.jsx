@@ -4,7 +4,7 @@ export default function Home() {
       <div className="home-intro">
         <div className="home-intro-copy">
           <h1>Hi, I'm Annie Feng<span className="accent-dot">.</span></h1>
-          <p className="lead">I build projects and conduct research at the intersection of thoughtful technology and curious questions.</p>
+          <p className="lead">I use data science to uncover insights and build solutions for real-world problems.</p>
         </div>
         <div className="home-headshot-frame">
           <img

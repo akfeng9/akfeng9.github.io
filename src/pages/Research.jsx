@@ -35,7 +35,7 @@ export default function Research() {
         <section id="planetary-boundary-layer">
           <p className="eyebrow">Research project 02</p>
           <h2>The Role of Planetary Boundary Layer Height in Ocean Surface Flux Variability</h2>
-          <p>A space for project context, data, analysis, and results.</p>
+          <p>This project focused on understanding the impact of planetary boundary layer height on ocean surface fluxes.</p>
           <a className="detail-link" href="#/research/planetary-boundary-layer">View full project <span aria-hidden="true">→</span></a>
         </section>
         <section id="diurnal-cycle">

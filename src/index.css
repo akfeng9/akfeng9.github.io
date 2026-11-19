@@ -120,7 +120,7 @@ body::before {
 
 .home-intro {
 	display: grid;
-	grid-template-columns: minmax(0, 1fr) minmax(220px, 280px);
+	grid-template-columns: minmax(0, 1fr) minmax(260px, 340px);
 	gap: clamp(2rem, 8vw, 7rem);
 	align-items: center;
 }
@@ -140,12 +140,12 @@ body::before {
 
 .home-headshot-frame {
 	width: 100%;
-	max-width: 280px;
-	aspect-ratio: 6 / 5;
+	max-width: 340px;
+	aspect-ratio: 1;
 	overflow: hidden;
 	background: var(--mint);
 	border: 1px solid rgba(23, 74, 50, 0.12);
-	border-radius: 3px;
+	border-radius: 50%;
 	justify-self: center;
 }
 
@@ -520,6 +520,54 @@ h1 {
 .detail-page h1 {
 	max-width: 780px;
 	font-size: clamp(2.3rem, 6vw, 4.5rem);
+}
+
+.detail-project-sections {
+	display: grid;
+	gap: 2rem;
+	margin-top: clamp(3rem, 7vw, 5rem);
+}
+
+.detail-project-section {
+	padding-top: 1.5rem;
+	border-top: 1px solid var(--line);
+}
+
+.detail-project-section h2 {
+	margin: 0;
+	color: var(--deep-forest);
+	font-size: clamp(1.45rem, 3vw, 2rem);
+	font-weight: 400;
+}
+
+.project-description-placeholder {
+	min-height: 3.5rem;
+	margin: 1rem 0 0;
+	color: #4c6e54;
+	line-height: 1.7;
+}
+
+.project-resource-links {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.75rem 1.5rem;
+	margin: 1rem 0 0;
+	padding: 0;
+	list-style: none;
+}
+
+.project-resource-links a {
+	color: var(--forest);
+	font-family: 'Trebuchet MS', sans-serif;
+	font-size: 0.78rem;
+	font-weight: 700;
+	text-decoration: underline;
+	text-underline-offset: 0.25em;
+}
+
+.project-resource-links a:hover,
+.project-resource-links a:focus-visible {
+	color: var(--deep-forest);
 }
 
 .back-link {

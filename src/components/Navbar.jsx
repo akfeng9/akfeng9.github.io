@@ -8,7 +8,6 @@ export default function Navbar() {
       <NavLink to="/">Home</NavLink>
       <NavLink to="/research">Research</NavLink>
       <NavLink to="/projects">Projects</NavLink>
-      <NavLink to="/courses">Courses</NavLink>
       <NavLink to="/coral-lytics">Coral-lytics</NavLink>
       </div>
     </nav>
